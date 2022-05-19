@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: API-GATEWAY
+  cloud:
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        corsConfigurations:
+          '[/**]':
+            allowed-origins: "*"
+            allowed-methods: "*"    
+            allowed-headers: "*"
+      discovery:
+        locator:
+          enabled: true
+
+server:
+  port: 8765
+  

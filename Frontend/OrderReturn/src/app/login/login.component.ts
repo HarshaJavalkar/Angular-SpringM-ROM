@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { CredentialsService } from '../credentials.service';
 import Constants from '../data/constants';
 import { LabelsService } from '../labels.service';
+import { LoaderService } from '../loader.service';
+import { SpinnerComponent } from '../spinner/spinner.component';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +23,8 @@ export class LoginComponent implements OnInit {
     private elementRef: ElementRef,
     private cs: CredentialsService,
     private labelService: LabelsService,
-    private router: Router
+    private router: Router,
+    private spinner: LoaderService
   ) {
     this.labels = this.labelService.getLabels();
   }
@@ -46,6 +49,7 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
+    this.spinner.displayLoad(true)
     this.subscription = this.cs.jwTAuth(this.form.value).subscribe(
       (data: any) => this.handleSuccessResponse(data),
       (error: any) => this.handleErrorResponse(error)
@@ -54,12 +58,17 @@ export class LoginComponent implements OnInit {
 
   handleSuccessResponse(res: any) {
     console.log(res);
+    this.spinner.displayLoad(false)
+
     if(res.status==200){
+      this.cs.setStatus(true);
       this.router.navigate(['orders']);
     }
 
   }
   handleErrorResponse(error: any) {
+    this.spinner.displayLoad(false)
+
     if (Constants.INV_CRED) {
       this.isInv = true;
     }

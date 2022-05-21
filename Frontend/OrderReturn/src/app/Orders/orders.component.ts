@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { delay } from 'rxjs';
 import { GetOrdersService } from '../get-orders.service';
+import { LoaderService } from '../loader.service';
 import { ProcessingService } from '../processing.service';
 
 @Component({
@@ -17,6 +18,7 @@ export class MyOrdersComponent implements OnInit {
     private order: GetOrdersService,
     private processing: ProcessingService,
     private router: Router,
+    private spinner: LoaderService
   ) {}
   orders: any;
   selectedItem: any;
@@ -48,18 +50,25 @@ export class MyOrdersComponent implements OnInit {
 
   submited() {
     console.log(this.selectedItem);
-    // this.persistenceService.set('selectedItem', '', {type: StorageType.SESSION});  
+    // this.persistenceService.set('selectedItem', '', {type: StorageType.SESSION});
 
-    sessionStorage.setItem('selectedItem',JSON.stringify(this.selectedItem));
-    this.processing
-      .getProcessingDetails(this.selectedItem)
-      .subscribe((data) => {
+    sessionStorage.setItem('selectedItem', JSON.stringify(this.selectedItem));
+    this.spinner.displayLoad(true);
+
+    this.processing.getProcessingDetails(this.selectedItem).subscribe(
+      (data) => {
+        this.spinner.displayLoad(false);
+
         if (data.status == 200) {
           this.handleSuccessResponse(data);
         }
 
         console.log(data);
-      });
+      },
+      (error) => {
+        this.spinner.displayLoad(true);
+      }
+    );
   }
 
   handleSuccessResponse(data: any) {

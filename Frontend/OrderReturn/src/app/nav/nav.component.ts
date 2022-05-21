@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { CredentialsService } from '../credentials.service';
 
 @Component({
@@ -7,17 +8,27 @@ import { CredentialsService } from '../credentials.service';
   styleUrls: ['./nav.component.scss'],
 })
 export class NavComponent implements OnInit {
-  logged : any;
+  logged =sessionStorage.getItem('token')?true:false;
+  $subs: Subscription;
   constructor(private cred: CredentialsService) {}
 
   ngOnInit(): void {
-    let token = false;
-    this.cred.getStatus().subscribe((res) => {
-      this.logged = res;
-    });
+    // let token = false;
+    this.$subs=this.cred.receiveloginState().subscribe(
+      data=>{
+        this.logged=data;
+      }
+    )
   }
   logout() {
     sessionStorage.clear();
-    this.cred.setStatus(false);
+    this.cred.token.next(false);
   }
+
+
+  ngOnDestroy() {
+    this.$subs.unsubscribe();
+  }
+
+
 }

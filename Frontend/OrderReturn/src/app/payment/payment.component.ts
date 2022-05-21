@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ConfirmService } from '../confirm.service';
+import { LoaderService } from '../loader.service';
+import { LoaderComponent } from '../LoaderComp/loader.component';
 import { SyncService } from '../sync.service';
 
 @Component({
@@ -12,7 +14,7 @@ import { SyncService } from '../sync.service';
 export class PaymentComponent implements OnInit {
   form: any;
   selectedItem: any;
-  constructor(private router: Router, private sync: SyncService, private confirmService: ConfirmService) {}
+  constructor(private router: Router, private sync: SyncService, private confirmService: ConfirmService, private spinner: LoaderService) {}
 
   ngOnInit(): void {
    this.selectedItem=  JSON.parse(sessionStorage.getItem('selectedItem')||'{}')
@@ -31,7 +33,10 @@ export class PaymentComponent implements OnInit {
     this.selectedItem.creditCardNumber=this.form.value.cardNumber;
     this.selectedItem.cardLimit=this.form.value.cardLimit
    JSON.stringify( sessionStorage.setItem('newReturn',this.selectedItem));
+   this.spinner.displayLoad(true)
+
     this.confirmService.confirmReturn(this.selectedItem).subscribe(data=>{
+      this.spinner.displayLoad(false)
       if(data.body.message=='DE-200'){
         this.router.navigate(['success']);
       }
@@ -40,6 +45,9 @@ export class PaymentComponent implements OnInit {
       }
 
       console.log(data);
+    },err=>{
+      this.spinner.displayLoad(false)
+
     });
   }
   back() {

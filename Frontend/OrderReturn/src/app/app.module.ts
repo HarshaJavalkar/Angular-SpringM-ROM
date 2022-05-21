@@ -19,9 +19,10 @@ import { PaymentComponent } from './payment/payment.component';
 import { ConfirmComponent } from './confirm/confirm.component';
 import { CommonErrorComponent } from './commonError/commonError.component';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { LoaderComponent } from './LoaderComp/loader.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, NavComponent, HomeComponent, MyOrdersComponent, ProcessComponent, SuccessComponent, SpinnerComponent, DeliveryComponent, PaymentComponent, ConfirmComponent, CommonErrorComponent],
+  declarations: [AppComponent, LoginComponent, LoaderComponent, NavComponent, HomeComponent, MyOrdersComponent, ProcessComponent, SuccessComponent, SpinnerComponent, DeliveryComponent, PaymentComponent, ConfirmComponent, CommonErrorComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

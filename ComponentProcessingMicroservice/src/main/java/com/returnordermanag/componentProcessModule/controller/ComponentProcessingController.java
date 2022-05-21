@@ -25,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @Slf4j
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "${CORS_URI:http://localhost:4200}")
 public class ComponentProcessingController {
 	@Autowired
 	IntegralPartService integralPartService;

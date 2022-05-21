@@ -6,7 +6,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.returnordermanag.componentProcessModule.model.AuthenticationResponse;
 
-//@FeignClient(name = "authenticationFeignClient", url = "http://localhost:8084/")
+
+//@FeignClient(name = "authenticationFeignClient", url = "${AUTH_URI:localhost:8084}")
 @FeignClient(name = "authenticationFeignClient")
 public interface AuthenticationFeignClient {
 

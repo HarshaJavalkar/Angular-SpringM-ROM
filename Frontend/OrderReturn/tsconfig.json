@@ -23,12 +23,14 @@
       "es2020",
       "dom"
     ],
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "strictPropertyInitialization": false
+
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": false,
     "strictInputAccessModifiers": true,
-    "strictTemplates": true
+    "strictTemplates": true,
   }
 }
